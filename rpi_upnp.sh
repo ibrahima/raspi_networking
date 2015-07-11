@@ -24,7 +24,7 @@ echo "Congratulations, your external port forwarding setup should be complete! I
 # Set up an hourly cron job to make sure the port forward doesn't disappear if something is rebooted.
 SCRIPT_PATH=dirname "$(readlink -f "$0")"
 
-BASE=basename $SCRIPT_PATH
+BASE_NAME=basename $SCRIPT_PATH
 if [[ ! -f /etc/cron.hourly/$BASE_NAME ]]; then
     sudo ln -s $SCRIPT_PATH /etc/cron.hourly/
 fi
