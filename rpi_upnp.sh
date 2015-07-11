@@ -20,4 +20,11 @@ EXTERNAL_PORT=10022    # You can set this to anything above 1024
 upnpc -a $IP 22 $EXTERNAL_PORT TCP
 
 echo "Congratulations, your external port forwarding setup should be complete! If you have a dynamic DNS service (eg. DuckDNS), you can now ssh pi@your.duckdns.org -p $EXTERNAL_PORT"
-echo "You may need to re-run this script if your router reboots. You can set it up using a cron job if you wish."
+
+# Set up an hourly cron job to make sure the port forward doesn't disappear if something is rebooted.
+SCRIPT_PATH=dirname "$(readlink -f "$0")"
+
+BASE=basename $SCRIPT_PATH
+if [[ ! -f /etc/cron.hourly/$BASE_NAME ]]; then
+    sudo ln -s $SCRIPT_PATH /etc/cron.hourly/
+fi
