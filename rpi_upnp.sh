@@ -21,10 +21,13 @@ upnpc -a $IP 22 $EXTERNAL_PORT TCP
 
 echo "Congratulations, your external port forwarding setup should be complete! If you have a dynamic DNS service (eg. DuckDNS), you can now ssh pi@your.duckdns.org -p $EXTERNAL_PORT"
 
-# Set up an hourly cron job to make sure the port forward doesn't disappear if something is rebooted.
-SCRIPT_PATH=dirname "$(readlink -f "$0")"
+echo "Setting up Cron Job"
 
-BASE_NAME=basename $SCRIPT_PATH
+# Set up an hourly cron job to make sure the port forward doesn't disappear if something is rebooted.
+SCRIPT_PATH=$(readlink -f "$0")
+echo "Path to script is $SCRIPT_PATH"
+
+BASE_NAME=$(basename $SCRIPT_PATH)
 if [[ ! -f /etc/cron.hourly/$BASE_NAME ]]; then
-    sudo ln -s $SCRIPT_PATH /etc/cron.hourly/
+    sudo ln -s $SCRIPT_PATH /etc/cron.hourly/$BASE_NAME
 fi
